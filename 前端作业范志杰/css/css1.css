@@ -16,19 +16,18 @@ p.introduce {
 /*div css绝对定位*/
 #out {
 	position: absolute;
-	top: 50px;
-	left: 100px;
+	top: 5%;
+	left: 10%;
 	background: #84AF9B;  /* 暗绿色*/
-
-	width:1200px;
-	height:750px;
+	width:80%;
+	height:95%;
 }
 #head {
 	text-align: center;
 	padding: 20px;
 	font-size: 40px;
 }
-#left1 {
+#left {
 	position:absolute ;
 	left: 50px;
 	top: 120px;

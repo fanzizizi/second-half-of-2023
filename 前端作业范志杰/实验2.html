@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
     <title>电子日历</title>
 
     <style type="text/css">
@@ -24,7 +24,6 @@
         #main{
             position: relative;
             top: 30px;
-
         }
 
         #main table tr td {
@@ -127,7 +126,13 @@
 </body>
 
 <script type="text/javascript">
-    //alert(getMaxDay(2024,2))
+    var date = new Date();
+
+    calendarAdd(date.getFullYear(),date.getMonth()+1,date.getDate(),date.getDay());
+
+
+    //下面是函数部分
+
     function monthChange(change) {
         var nowMonth = document.getElementById("month").innerHTML.match(/\d+/g); //获取目前日历的月份
         var newMonth = (1*nowMonth)+change;     //如果是-1就 前一月   如果是+1就 后一月
@@ -142,6 +147,7 @@
             }
             
             var week = document.getElementById("btnadd").value;
+            //var week = change.target.value;
             //alert(week)
             calendarAdd(newYear,newMonth,1,week);
         }else{
@@ -157,33 +163,25 @@
               
     }
 
-    var date = new Date();
-
-    calendarAdd(date.getFullYear(),date.getMonth()+1,date.getDate(),date.getDay());
-    //alert(document.getElementById("btnsub").value)
-
     function calendarAdd(year,month,day,week) {
         updateYear(year);
         updateMonth(month);
         /*获取这个月的 一号 是周几 1-1 2-2 ...0-日*/
-        
         var wekPoint = getMonthFristDay(week,day);
-        
+        //如果获取的是0 ，那么是周日，设置为7,方便后面操作
         if (wekPoint == 0) {
             wekPoint = 7;
         }
-        //如果获取的是0 ，那么是周日，设置为7
+
         //获取当月最大日期
         var maxDay = getMaxDay(year,month);
         /*获取上一月的最大日期，如果这个月是1月 那么上个月应该是12月*/
         var preMonth = month - 1;
         if (preMonth == 0) {
-            var preMonth = 12;
+            preMonth = 12;
         }
-        //alert(wekPoint)
-
         var preMonthMaxDay = getMaxDay(year,preMonth);
-        //获取结束
+
         //拿到增加点位的元素
         var $table = document.getElementById("addPoint");
         //用于合并字符串
@@ -192,7 +190,7 @@
         var dayPoint = 1;
         //用于辅助处理前月的值
         var temwek = wekPoint;  
-        document.getElementById("btnsub").value =wekPoint - 1; /* 记录上一月 最后一天的星期 */
+        document.getElementById("btnsub").value = wekPoint - 1; /* 记录上一月 最后一天的星期 */
         while (dayPoint <= maxDay) {          
              while(temwek-- > 1) {
                    /*处理前月的值*/ 
@@ -202,13 +200,13 @@
                 }else{
                     str += "<td id= 'pre'>" + (preMonthMaxDay+1-temwek)+ "</td>";
                 }
-             }
+             }  
 
             //str+= "<input type = 'hidden' name = 'preMonthWeek' value = '"+(wekPoint-1)+"'>"
 
             while (wekPoint < 8 && dayPoint <= maxDay){
                 
-                if (dayPoint == new Date().getDate() && month == new Date().getMonth()+1) {
+                if (dayPoint == new Date().getDate() && month+1 == new Date().getMonth()+1) {
                     str += "<td id = 'now'>" + dayPoint + "</td>";
                 }else{
                     str += "<td>" + dayPoint + "</td>";
@@ -220,28 +218,25 @@
 
             //str+= "<input type = 'hidden' name = 'nextMonthWeek' value = '"+((wekPoint+1) % 7)+"'>"
             //上面是之前的实现方式，感觉太复杂
-             //这里结束后只是前月以及当月的被输入到日历
-            //下面处理下一月 
-            //有空再写吧  饿死了
+            //这里结束后只是前月以及当月的被输入到日历
             //重点：需要把wekPoint当前做标记，用于下个月
-            if (j == 8) {
-                document.getElementById("btnadd").value = 1;
-            }
+            var flag = 1;
             for (var i = 1,j = wekPoint; j < 8; i++,j++) {
                 if (i == 1) {    
                     document.getElementById("btnadd").value = (wekPoint) % 7;  //标记
+                    flag = 0;
                 }
                 str += "<td id = 'next'>" + i + "</td>";
+            }
+
+            if (flag == 1) {
+                document.getElementById("btnadd").value = 1;
             }
            
             wekPoint = 1;
             str += "</tr>";        
             $table.innerHTML += str;
             str = "<tr>";
-            //这里结束后只是前月以及当月的被输入到日历
-            //下面处理下一月 
-            //有空再写吧  饿死了
-            //重点：需要把
         }
 
     }
@@ -262,8 +257,8 @@
                 return 28;
             }            
         }
-        return 30;
-       
+
+        return 30; 
     }
 
     function updateYear(year) {
