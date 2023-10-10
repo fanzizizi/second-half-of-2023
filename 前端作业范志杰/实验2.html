@@ -19,6 +19,8 @@
         #head{
             position: relative;
             top: 20px;
+/*            background: red;*/
+/*            text-decoration: underline;*/
         }
 
         #main{
@@ -206,7 +208,7 @@
 
             while (wekPoint < 8 && dayPoint <= maxDay){
                 
-                if (dayPoint == new Date().getDate() && month+1 == new Date().getMonth()+1) {
+                if (dayPoint == new Date().getDate() && month == new Date().getMonth()+1) {
                     str += "<td id = 'now'>" + dayPoint + "</td>";
                 }else{
                     str += "<td>" + dayPoint + "</td>";

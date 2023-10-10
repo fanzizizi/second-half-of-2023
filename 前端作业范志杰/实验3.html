@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>拖动测试</title>
+
+		<style>
+
+			#divA {
+				align-items: center;
+				width: 960px;
+				height:350px;
+			}
+
+			.inner {
+				align-self: center;
+				float: left;
+				height: 160px;
+				width: 120px;
+				border: 1px solid;
+			}
+
+			#divB {
+				width: 800px;
+				height: 200px;
+				border: 1px double blue;
+			}
+
+			.bei {
+				align-self: center;
+				width: 105px;
+				height: 150px;
+/*				border: 1px solid red;*/
+			}
+		</style>
+
+	</head>
+
+
+
+	<body>
+		
+		<div id="divA" ondrop="drop(event)"   ondragover="allowDrop(event)">
+			<div class="inner">
+				<img src="poker/bei.webp" ondragstart="drag(event)" id="100" class="bei">	
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp" ondragstart="drag(event)" id="101" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp" ondragstart="drag(event)" id="102" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp" ondragstart="drag(event)" id="103" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="104" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="105" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="106" class="bei">	
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="107" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="108" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="109" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="110" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="111" class="bei">
+			</div>
+			<div class="inner">
+				<img src="poker/bei.webp"  ondragstart="drag(event)" id="112" class="bei">	
+			</div>
+			<div class="inner" id= "count" align="center">
+					<span>拖放次数</span>
+			</div>		
+		</div>
+
+		<div id="divB" ondrop="drop2(event)" ondragover="allowDrop(event)">
+			<!-- <img src="poker/heart1.jpg">
+			<img src="poker/heart2.jpg">
+			<img src="poker/heart3.jpg">
+			<img src="poker/heart4.jpg">
+			<img src="poker/heart5.jpg"> -->
+		</div>
+
+
+
+	</body>
+
+	<script>
+
+		var tem = [0,0,0,0,0,0,0,0,0,0,0,0,0];//全局变量用于防止重复
+		var count = 0;
+		document.getElementById("count").innerHTML = "拖放次数"+  count;
+		function drop(event) {
+			event.preventDefault();
+			count++;
+			var id = event.dataTransfer.getData("Text");
+			// alert(id);
+			var $img = document.getElementById(id); 
+			$img.src = "poker/bei.webp";
+			//alert($img.value)
+			//alert(event.target.innerHTML);
+			var $div = document.getElementsByClassName("inner");
+			// alert((id*1)-100);
+			// alert($div);
+			$div[Number(id)-100].appendChild($img);
+			$div[13].innerHTML ="拖放次数" + count;
+		} 
+
+		
+
+		function drop2(event) {
+			event.preventDefault();
+			var id = event.dataTransfer.getData("Text");
+			var $img = document.getElementById(id); 
+			count++;
+			var num = $img.value;
+			//alert(num);
+			if(num == undefined) {
+				do {
+
+					num = Math.trunc((Math.random()*13)+1);
+
+				}while(tem[num - 1] == 1);
+				
+				tem[num - 1] = 1;
+			}
+			
+			//alert(event.target.innerHTML);
+			//var $img = new image();
+			$img.value = num;
+			$img.src = "poker/heart" + num +".jpg";
+			//alert($img.value);
+			//alert($img.src);
+			//alert($img.id);
+			event.target.appendChild($img);
+			document.getElementById("count").innerHTML = "拖放次数" + count;
+
+		} 
+		
+		function drag(ev) {
+			//ev.dataTransfer.setDate("text/plain","122");
+			ev.dataTransfer.setData("Text", ev.target.id);
+		}
+
+		function allowDrop(ev) {
+
+			ev.preventDefault();
+		}
+
+		function isEnd() {
+			
+		}
+	</script>
+
+
+</html>
