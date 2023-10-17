@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问卷调查</title>
+    <style>
+        body {
+            background-color: gray;
+        }
+        #main {
+            background-color: white;
+            margin: auto;
+            width:900px;
+            height: 600px;
+			background-color: white;
+			box-shadow:10px 10px 15px black;
+			margin-top:10px;
+
+        }
+
+        form {
+            /* margin-left: 100px; */
+            /* padding-left: 5%; */
+            font-size: 20px;
+        }
+        input{
+            border-color: black;
+            border-top-width:0px;
+            border-right-width:0px;
+            border-bottom-width:2px;
+            border-left-width:0px;
+            margin-left: 50px;
+        }
+        h1 {
+            padding-top: 20px;
+            text-align: center;
+        }
+        label {
+            padding-left: 30px;
+        }
+        button {
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+            height: 50px;
+            width: 150px;
+            font-size: 30px;
+        }
+        
+
+    </style>
+    <script></script>
+</head>
+<body>
+    <div id="main">
+        <h1>大学生爱好问卷调查</h1>
+        <hr/>
+        <form method="post" action="#">
+            <label for="userName">姓名:<input type="text" name="userName"></input></label>
+            <br/>
+            <label for="gender">你的性别是:</label><br/>
+            <input type="radio" name="gender">男
+            <input type="radio" name="gender">女
+            <br/>
+            
+            
+            <label for="grade">你的年级是:</label><br/>
+            <input type="radio" name="grade">大一</input>
+            <input type="radio" name="grade">大二</input>
+            <input type="radio" name="grade">大三</input>
+            <input type="radio" name="grade">大四</input>
+            <br> 
+            
+            <label for="hobby">你喜欢的运动有?(可多选)</label>
+            <br> 
+            <input type="checkbox" name="hobby">足球</input><br>
+            <input type="checkbox" name="hobby">篮球</input><br>
+            <input type="checkbox" name="hobby">乒乓球</input><br>
+            <input type="checkbox" name="hobby">羽毛球</input><br>
+            <input type="checkbox" name="hobby">拳击</input><br>
+            <input type="checkbox" name="hobby">柔术</input><br>
+            <hr>
+            <button id="btn" type="submit">提交问卷</button>
+        </form>
+        
+    </div>
+    
+
+</body>
+</html>

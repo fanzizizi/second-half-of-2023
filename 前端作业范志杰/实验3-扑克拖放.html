@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>拖动测试</title>
+		<title>拖动扑克</title></title>
 
 		<style>
 
@@ -39,7 +39,7 @@
 
 	<body>
 		
-		<div id="divA" ondrop="drop(event)"   ondragover="allowDrop(event)">
+		<div id="divA" ondrop="drop(event)" ondragover="allowDrop(event)">
 			<div class="inner">
 				<img src="poker/bei.webp" ondragstart="drag(event)" id="100" class="bei">	
 			</div>
@@ -97,35 +97,66 @@
 	</body>
 
 	<script>
-
+		// var record = [1,2,3,4,5];
+		// var max = 0;
+		// 		for(var i = 0; i < 5 ;i++) {
+		// 			if(record[i] > max) {
+		// 				max = record[i];
+		// 			}
+		// 		}
+		// 		alert(max)
+		// 		temp = 3;
+		// 		if (max == temp + 2) {
+		// 			alert("挑战完成");
+		// 		}
+		//alert(Math.floor(3.2));
 		var tem = [0,0,0,0,0,0,0,0,0,0,0,0,0];//全局变量用于防止重复
 		var count = 0;
+		var divBCount = 0;
+		var sum = 0;
+		var record = [0,0,0,0,0];
 		document.getElementById("count").innerHTML = "拖放次数"+  count;
+
+		//divA的放置时的操作
 		function drop(event) {
 			event.preventDefault();
-			count++;
+
 			var id = event.dataTransfer.getData("Text");
-			// alert(id);
-			var $img = document.getElementById(id); 
-			$img.src = "poker/bei.webp";
-			//alert($img.value)
-			//alert(event.target.innerHTML);
+		
+			var $img = document.getElementById(id);
+	
+			if($img.src.search("heart") != -1) {
+				count++;
+				$img.src = "poker/bei.webp";
+				divBCount--;
+				sum -= Number($img.value);
+				recordSub(Number($img.value));
+			}
+			
 			var $div = document.getElementsByClassName("inner");
-			// alert((id*1)-100);
-			// alert($div);
+
 			$div[Number(id)-100].appendChild($img);
+			
+			
 			$div[13].innerHTML ="拖放次数" + count;
+			//alert(sum)
 		} 
 
 		
-
+		//divB放置时操作
 		function drop2(event) {
+			
+			if(divBCount == 5) {				
+				//alert("该区域已满");
+				
+				return false;
+			}
 			event.preventDefault();
 			var id = event.dataTransfer.getData("Text");
 			var $img = document.getElementById(id); 
 			count++;
 			var num = $img.value;
-			//alert(num);
+			
 			if(num == undefined) {
 				do {
 
@@ -135,32 +166,83 @@
 				
 				tem[num - 1] = 1;
 			}
-			
-			//alert(event.target.innerHTML);
-			//var $img = new image();
+			recordAdd(num);
 			$img.value = num;
-			$img.src = "poker/heart" + num +".jpg";
-			//alert($img.value);
-			//alert($img.src);
-			//alert($img.id);
-			event.target.appendChild($img);
+			sum += num;
+			//$img.src = "poker/heart" + num +".jpg";
+			$img.src = `poker/heart${num}.jpg`;
+			//event.target.appendChild($img);
+			divBCount++;
+			document.getElementById("divB").appendChild($img);
 			document.getElementById("count").innerHTML = "拖放次数" + count;
-
+			//alert(sum);
+			if(divBCount == 5) {
+				isEnd();
+			}
 		} 
+
+
+
+		function recordAdd(num) {
+			for(var i = 0; i < 5; i++) {
+				if(record[i] == 0) {
+					record[i] = num;
+					//alert("插入" + i + "=" + num);
+		 			return false;
+		 		}
+		 	}
+		}
+
+		//问题：不知道为什么 把这个启用后 就不能移动 
+		//经过1天的观察，终于发现了......以此为戒  JavaScript 没有int类型
+		// function recordAdd(num) {
+		// 	for(int i = 0; i < 5; i++) {
+		// 		if(record[i] == 0) {
+		// 			record[i] = num;
+		// 			break;
+		// 		}
+		// 	}	
+		// }
+
+		function recordSub(num) {
+			for(var i = 0; i < 5; i++) {
+
+				if(record[i] == num) {
+					record[i] = 0;
+					return false;
+				}
+
+			}	
+		}
+
+		function isEnd() {
+			//如果是整数
+			let temp = sum / 5;
+			//alert(temp)
+			if(temp == Math.floor(temp)) {
+				let max = 0;
+				//alert(temp);
+				for(var i = 0; i < 5 ;i++) {
+					if(record[i] > max) {
+						max = record[i];
+					}
+				}
+				//alert(temp);
+				//alert(max);
+				if (max == temp + 2) {
+					alert("挑战完成");
+				}
+			}
+		}
 		
 		function drag(ev) {
-			//ev.dataTransfer.setDate("text/plain","122");
 			ev.dataTransfer.setData("Text", ev.target.id);
 		}
 
 		function allowDrop(ev) {
-
 			ev.preventDefault();
 		}
 
-		function isEnd() {
-			
-		}
 	</script>
 
 
