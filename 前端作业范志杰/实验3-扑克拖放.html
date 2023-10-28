@@ -85,11 +85,7 @@
 		</div>
 
 		<div id="divB" ondrop="drop2(event)" ondragover="allowDrop(event)">
-			<!-- <img src="poker/heart1.jpg">
-			<img src="poker/heart2.jpg">
-			<img src="poker/heart3.jpg">
-			<img src="poker/heart4.jpg">
-			<img src="poker/heart5.jpg"> -->
+
 		</div>
 
 
@@ -97,24 +93,20 @@
 	</body>
 
 	<script>
-		// var record = [1,2,3,4,5];
-		// var max = 0;
-		// 		for(var i = 0; i < 5 ;i++) {
-		// 			if(record[i] > max) {
-		// 				max = record[i];
-		// 			}
-		// 		}
-		// 		alert(max)
-		// 		temp = 3;
-		// 		if (max == temp + 2) {
-		// 			alert("挑战完成");
-		// 		}
-		//alert(Math.floor(3.2));
+
+		function drag(ev) {
+			ev.dataTransfer.setData("Text", ev.target.id);
+		}
+
+		function allowDrop(ev) {
+			ev.preventDefault();
+		}
+
 		var tem = [0,0,0,0,0,0,0,0,0,0,0,0,0];//全局变量用于防止重复
-		var count = 0;
-		var divBCount = 0;
-		var sum = 0;
-		var record = [0,0,0,0,0];
+		var count = 0;//拖放次数
+		var divBCount = 0;//记录B框中扑克的数量，防止大于5
+		var sum = 0;//记录B框所有扑克值(value)加起来的大小，用于辅助结束判断
+		var record = [0,0,0,0,0];//记录扑克的各个值
 		document.getElementById("count").innerHTML = "拖放次数"+  count;
 
 		//divA的放置时的操作
@@ -138,12 +130,10 @@
 			$div[Number(id)-100].appendChild($img);
 			
 			
-			$div[13].innerHTML ="拖放次数" + count;
-			//alert(sum)
+			$div[13].innerHTML ="拖放次数" + count;	
 		} 
-
 		
-		//divB放置时操作
+		//divB的放置时的操作
 		function drop2(event) {
 			
 			if(divBCount == 5) {				
@@ -156,22 +146,22 @@
 			var $img = document.getElementById(id); 
 			count++;
 			var num = $img.value;
-			
+			//给图片产生随机不重复值(num)
+			//tem辅助变量，用于记录一个值是否被使用
 			if(num == undefined) {
 				do {
-
+					//random随机值函数 trunc取整函数
 					num = Math.trunc((Math.random()*13)+1);
 
 				}while(tem[num - 1] == 1);
 				
 				tem[num - 1] = 1;
 			}
+
 			recordAdd(num);
 			$img.value = num;
 			sum += num;
-			//$img.src = "poker/heart" + num +".jpg";
 			$img.src = `poker/heart${num}.jpg`;
-			//event.target.appendChild($img);
 			divBCount++;
 			document.getElementById("divB").appendChild($img);
 			document.getElementById("count").innerHTML = "拖放次数" + count;
@@ -187,26 +177,24 @@
 			for(var i = 0; i < 5; i++) {
 				if(record[i] == 0) {
 					record[i] = num;
-					//alert("插入" + i + "=" + num);
 		 			return false;
 		 		}
 		 	}
 		}
 
 		//问题：不知道为什么 把这个启用后 就不能移动 
-		//经过1天的观察，终于发现了......以此为戒  JavaScript 没有int类型
+		//经过1天的观察，终于发现了......以此为戒  JavaScript 没有int类型 最近写LeetCode写迷糊了
 		// function recordAdd(num) {
 		// 	for(int i = 0; i < 5; i++) {
 		// 		if(record[i] == 0) {
 		// 			record[i] = num;
 		// 			break;
 		// 		}
-		// 	}	
+		// 	 }	
 		// }
 
 		function recordSub(num) {
 			for(var i = 0; i < 5; i++) {
-
 				if(record[i] == num) {
 					record[i] = 0;
 					return false;
@@ -221,27 +209,18 @@
 			//alert(temp)
 			if(temp == Math.floor(temp)) {
 				let max = 0;
-				//alert(temp);
 				for(var i = 0; i < 5 ;i++) {
 					if(record[i] > max) {
 						max = record[i];
 					}
 				}
-				//alert(temp);
-				//alert(max);
 				if (max == temp + 2) {
-					alert("挑战完成");
+					alert("挑战完成，您的拖放次数是："+count);
 				}
 			}
 		}
 		
-		function drag(ev) {
-			ev.dataTransfer.setData("Text", ev.target.id);
-		}
-
-		function allowDrop(ev) {
-			ev.preventDefault();
-		}
+		
 
 	</script>
 

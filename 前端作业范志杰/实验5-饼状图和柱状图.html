@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>饼状图和柱状图</title>
+	<style type="text/css">
+		body {
+/*			background: gray;*/
+		}
+		#piechart,#column {
+			margin: 100px 50px;
+		}
+		form {
+			margin: 30px 30% 0 30%;
+/*			display: block;*/
+		}
+	</style>
+</head>
+<body>
+	<form>
+		<label>总是熬夜人数<input type="number" name="always"></label><br>
+		<label>经常熬夜人数<input type="number" name="often"></label><br>
+		<label>偶尔熬夜人数<input type="number" name="occasionally"></label><br>
+		<label>从不熬夜人数<input type="number" name="never"></label><br>
+		<button type="button" onclick="clickButton()">确认数据</button> 
+	</form> 
+	
+	<canvas id="piechart" width="500" height="500"></canvas>
+	<canvas id="column" width="600" height="500"></canvas>
+</body>
+<script type="text/javascript">
+	//两个画笔对象
+	var $piechart = document.getElementById("piechart");
+	var ctx1 = $piechart.getContext("2d");
+	var $column = document.getElementById("column");
+	var ctx2 = $column.getContext("2d");
+	//记录数据数组
+	var numCount = [200,300,400,100];
+	var sum = 1000;
+	
+	//页面初始化调用方法(使用默认数据)
+	showpiechart();
+	showcolumn();
+
+	function showpiechart() {
+		ctx1.fillStyle = '#ffffff';
+		ctx1.fillRect(0, 0, 700, 450);
+		var x0 = ctx1.canvas.width / 2;
+		var y0 = ctx1.canvas.height / 2;
+		
+		var pre = 0;
+		for (var i = 0; i < 4; i++) {
+			var col = 51*(i+1);
+			ctx1.beginPath();
+			ctx1.moveTo(x0,y0);
+			var radian = pre + getdata(i);
+			ctx1.arc(x0,y0,150,pre,radian);
+			
+			ctx1.closePath();
+			ctx1.fillStyle = randomCol();		
+			ctx1.fill();
+
+			var edge = 170
+			//X
+			var edgeX = edge * Math.cos((pre + radian) / 2);
+            //Y轴方向
+            var edgeY = edge * Math.sin((pre + radian) / 2);
+            var outX = x0 + edgeX;
+            var outY = y0 + edgeY;
+            ctx1.beginPath();
+            ctx1.moveTo(x0, y0);
+            ctx1.lineTo(outX, outY);
+            ctx1.strokeStyle = ctx1.fillStyle;
+            ctx1.stroke();
+
+
+            let textW = 40;
+            ctx1.textBaseline = "bottom";
+                //判断文字方向
+            if (outX > x0) {
+                ctx1.lineTo(outX + textW, outY);
+                ctx1.textAlign = 'left';
+            } else {
+                ctx1.lineTo(outX - textW, outY);
+                ctx1.textAlign = 'right';
+            }
+
+            ctx1.font = '14px serif';
+            var text = "总是熬夜";
+            if (i == 1) {
+            	text = "经常熬夜"
+            }else if (i == 2) {
+            	text = "偶尔熬夜"
+            }else if (i == 3) {
+            	text = "从不熬夜"
+            }
+            ctx1.fillText(text,outX,outY)
+            ctx1.stroke();
+
+			pre = radian;
+		}				
+	}
+	//只有在页面初始化时调用一次，此后不用更新
+	function showcolumn() {
+		//画出xy坐标
+		ctx2.beginPath();
+		ctx2.moveTo(50,50)
+		ctx2.lineTo(50,450)
+		ctx2.lineTo(500,450)
+		ctx2.stroke()
+		//绘制x，y坐标轴箭头
+		ctx2.moveTo(40,60)
+		ctx2.lineTo(50,50)
+		ctx2.lineTo(60,60)
+		ctx2.moveTo(490,440)
+		ctx2.lineTo(500,450)
+		ctx2.lineTo(490,460)
+		ctx2.stroke()
+		//确定坐标间距X 轴固定先画
+		ctx2.font = "bold 15px serif"
+		ctx2.fillText("总是熬夜",100,470)
+		ctx2.fillText("经常熬夜",200,470)
+		ctx2.fillText("偶尔熬夜",300,470)
+		ctx2.fillText("从不熬夜",400,470)
+		ctx2.fillText(0,40,460);
+		//绘制等分点
+		for (var i = 0; i < 7; i++) {
+			ctx2.moveTo(50,400 - i * 50);
+			ctx2.lineTo(60,400 - i * 50);
+		}
+		ctx2.stroke();
+		fillByData();
+	}
+
+	function fillByData() {
+		ctx2.fillStyle = '#ffffff';
+		ctx2.fillRect(70, 0, 700, 450);
+		var max = numCount[0];
+		for(var i = 1; i < 4; i++) {
+			if (max < numCount[i]) {
+				max = numCount[i];
+			}
+		}
+		for(var i = 0; i < 7;i++) {
+			ctx2.fillStyle = randomCol();
+			ctx2.fillText(50*(i+1),20,405-i*50)
+		}
+		for(var i = 0; i < 4;i++) {
+			var x1 = 100+i*100
+			var y1 = 450-(numCount[i]/50.0)*50
+			ctx2.fillStyle = randomCol();
+			ctx2.fillRect(x1,y1,50,numCount[i])
+			
+			ctx2.fillText(numCount[i],x1+15,y1-10)
+		}
+	}
+
+	function clickButton() {
+		var $input = document.getElementsByTagName("input");
+		sum = 0;
+		for(var i = 0; i < 4 ; i++) {
+			numCount[i] = $input[i].value;
+			sum += Number($input[i].value)
+		}
+		showpiechart();
+		fillByData();
+	}
+
+	function getdata(num) {
+		var res = (numCount[num] / sum);
+		return res * 2 * Math.PI;
+	}
+
+	function randomCol() {
+		var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        return 'rgb(' + r + ',' + g + ',' + b + ')';
+	}
+
+
+</script>
+</html>

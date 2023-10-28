@@ -11,81 +11,182 @@
         #main {
             background-color: white;
             margin: auto;
-            width:900px;
-            height: 600px;
-			background-color: white;
+            width:1000px;
+            height: 700px;
 			box-shadow:10px 10px 15px black;
 			margin-top:10px;
 
         }
 
-        form {
-            /* margin-left: 100px; */
-            /* padding-left: 5%; */
-            font-size: 20px;
+        #personInfo{
+            position: relative;
+            width: 70%;
+            left: 10%;
         }
-        input{
-            border-color: black;
-            border-top-width:0px;
-            border-right-width:0px;
-            border-bottom-width:2px;
-            border-left-width:0px;
-            margin-left: 50px;
+        #Info{
+            position: relative;
+            width: 70%;
+            left: 10%;
         }
         h1 {
             padding-top: 20px;
             text-align: center;
         }
-        label {
-            padding-left: 30px;
-        }
+
         button {
-            text-align: center;
-            margin: 0 auto;
+            margin: auto;/*居中*/
             display: block;
             height: 50px;
             width: 150px;
             font-size: 30px;
         }
-        
+        #error {
+            color: red;
+        }
 
     </style>
     <script></script>
 </head>
 <body>
     <div id="main">
-        <h1>大学生爱好问卷调查</h1>
+        <h1>大学生作息时间问卷调查</h1>
         <hr/>
-        <form method="post" action="#">
-            <label for="userName">姓名:<input type="text" name="userName"></input></label>
-            <br/>
-            <label for="gender">你的性别是:</label><br/>
-            <input type="radio" name="gender">男
-            <input type="radio" name="gender">女
-            <br/>
+        <form method="post" action="./success.html">
+            <fieldset id="personInfo">
+                <legend>个人信息</legend>
+                <ul>
+                    <li><label>姓名:<input type="text" name="userName" id="userName"></input><span id="error"></span></label></li>
+                    <li><label>电话:<input type="tel" name="tel" id="tel"></input></label></li>
+                    <li><label for="email">邮箱:</label><input type="email" name="email" id="email"></li>
+                    <li><label for="gender">你的性别是:</label>
+                        <label><input type="radio" id="gender" name="gender">男</label>
+                        <label><input type="radio" id="gender" name="gender">女</label>
+                    </li>
+                    <li>
+                        <label for="grade">你的年级是(可不选):</label>
+                        <br/>
+                        <label><input type="radio" name="grade">大一</input></label>
+                        <label><input type="radio" name="grade">大二</input></label>
+                        <label><input type="radio" name="grade">大三</input></label>
+                        <label><input type="radio" name="grade">大四</input></label>
+                    </li>
+                    <li>
+                        <label>您所在的学院是(可不选):
+                        <select>
+                            <option value="1">医学院</option>
+                            <option value="2" selected>计算机科学学院</option>
+                            <option value="3">机械学院</option>
+                            <option value="4">电气学院</option>
+                            <option value="5">药学院</option>
+                            <option value="6">文学院</option>
+                            <option value="7">法学院</option>
+                            <option value="8">土木学院</option>
+                            <option value="9">管理学院</option>
+                        </select>
+                </label>
+                    </li>
+                </ul>
+            </fieldset>
             
-            
-            <label for="grade">你的年级是:</label><br/>
-            <input type="radio" name="grade">大一</input>
-            <input type="radio" name="grade">大二</input>
-            <input type="radio" name="grade">大三</input>
-            <input type="radio" name="grade">大四</input>
-            <br> 
-            
-            <label for="hobby">你喜欢的运动有?(可多选)</label>
-            <br> 
-            <input type="checkbox" name="hobby">足球</input><br>
-            <input type="checkbox" name="hobby">篮球</input><br>
-            <input type="checkbox" name="hobby">乒乓球</input><br>
-            <input type="checkbox" name="hobby">羽毛球</input><br>
-            <input type="checkbox" name="hobby">拳击</input><br>
-            <input type="checkbox" name="hobby">柔术</input><br>
+            <fieldset id="Info">
+                <legend>问卷信息</legend>
+                <ul>
+                    <li>
+                        <label>你的作息习惯是：
+                            <label><input type="radio" name="habit">早睡早起</label>
+                            <label><input type="radio" name="habit">早睡晚起</label>
+                            <label><input type="radio" name="habit">晚睡早起</label>
+                            <label><input type="radio" name="habit">晚睡晚起</label>
+                            <label><input type="radio" name="habit">自适应</label>                                                  
+                        </label>
+                    </li>
+                    <li>
+                        <label>你是否经常熬夜：
+                            <label><input type="radio" name="late">经常熬夜</label>
+                            <label><input type="radio" name="late">偶尔熬夜</label>
+                            <label><input type="radio" name="late">几乎不熬夜</label>
+                        </label>
+                    </li>
+                    <li>
+                        <label>熬夜的原因(可多选)：<br/>
+                            <label><input type="checkbox" name="reason">沉迷网络</label>
+                            <label><input type="checkbox" name="reason">沉迷学习</label>
+                            <label><input type="checkbox" name="reason">失眠</label>
+                            <label><input type="checkbox" name="reason">学校、学院、社团工作</label>
+                            <label><input type="checkbox" name="reason">为恋爱苦恼</label>
+                        </label>
+                    </li>
+                    <li>
+                        <label for="des">对学校的建议:</label><br>
+                        <textarea style="width:200px;height: 100px;" name="des" id="des" placeholder="可为空"></textarea><br>
+                    </li>
+                </ul>
+                
+            </fieldset>
             <hr>
-            <button id="btn" type="submit">提交问卷</button>
+
+            <button id="btn" type="submit" onclick="return check()">提交问卷</button>
         </form>
         
     </div>
     
-
 </body>
+<script type="text/javascript">
+    var $error = document.getElementById("error");
+    function check() {
+        //判断名字不为空
+        if(document.getElementById("userName").value == "") {
+            $error.innerHTML = "名字不能为空"
+            return false;
+        }
+        //判断电话号全是数字
+        var tel = document.getElementById("tel").value;
+        var r = /\d/;
+        if(!r.test(tel)) {
+            $error.innerHTML = "电话号码必须为数字"
+            return false;
+        }
+        //邮箱的判断type="email"已经帮助判断了
+        //判断gender的选择是否为空  使用到了 getElementsByName
+        var gender = document.getElementsByName("gender");
+        var flag = true;
+        for (var i = 0; i<gender.length; i++) {
+            if(gender[i].checked) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            $error.innerHTML = "请选择性别"
+            return false;
+        }
+        //判断作息习惯
+        var habit = document.getElementsByName("habit");
+        flag = true;
+        for (var i = 0; i< habit.length; i++) {
+            if(habit[i].checked) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            $error.innerHTML = "请选择作息习惯"
+            return false;
+        }
+        //
+        var reason = document.getElementsByName("reason");
+        flag =true;
+        for (var i = 0; i< reason.length; i++) {
+            if(reason[i].checked) {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) {
+            $error.innerHTML = "请原因"
+            return false;
+        }
+        return true;
+    }
+</script>
 </html>
