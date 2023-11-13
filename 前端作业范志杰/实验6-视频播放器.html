@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频播放器设计</title>
+    <style>
+        video {
+            height: 540px;
+            width: 960px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #main {
+            position: absolute;
+            left: 10%;
+            top: 5%;
+            margin: auto;
+        }
+
+        #right {
+            position: absolute;
+            left: 75%;
+            top: 10%;
+            background-color: yellow;
+        }
+
+        .jindu {
+            width: 960px;
+            height: 10px;
+            border-radius: 15px;
+            background: #959595;
+        }
+
+        #jinduyanse {
+            width: 0px;
+            height: 10px;
+            border-radius: 15px;
+            background: #00ffcc;
+        }
+
+        #buttons {
+            position: absolute;
+            top: 105%;
+            
+        }
+
+        #buttons button {
+            margin: 10px;
+            width: 100px;
+        }
+
+        .Episodes {
+            width: 200px;
+            height: 40px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="main">
+        <video id="video1" src="videos/tom1.mp4"></video>
+        <div class="jindu">
+            <div id="jinduyanse"></div>
+        </div>
+        <div id="buttons">
+            <button onclick="changeEpisode(-1)">上一集</button>
+            <button id="playButton" onclick="videoPlayOrPause()">播放</button>
+            <button onclick="changeEpisode(1)">下一集</button>
+            <button id="muteButton" onclick="videoMute()">静音</button>
+            <button onclick="fastForward(-5)">快退</button>
+            <button onclick="fastForward(5)">快进</button>
+            <br>
+            <button id="videoAdd" onclick="videoChangeSize(0.1)">画面放大</button>
+            <button id="videoSub" onclick="videoChangeSize(-0.1)">画面缩小</button>
+            <button id="videoInit" onclick="videoInitSize()">恢复原始大小</button>
+        </div>
+    </div>
+    <div id="right">
+        <ul>
+            <li><button value="videos/tom1.mp4" class="Episodes" onclick="changeEpisode(this)">第一集:十年</button></li>
+            <li><button value="videos/tom2.mp4" class="Episodes" onclick="changeEpisode(this)">第二集:秋天不回来</button></li>
+            <li><button value="videos/tom3.mp4" class="Episodes" onclick="changeEpisode(this)">第三集:夜曲</button></li>
+            <li><button value="videos/tom4.mp4" class="Episodes" onclick="changeEpisode(this)">第四集:一路向北</button></li>
+            <li><button value="videos/tom5.mp4" class="Episodes" onclick="changeEpisode(this)">第五集:东风破</button></li>
+        </ul>
+    </div>
+    
+</body>
+<script>
+    var $video = document.getElementById("video1");
+    var $playButton = document.getElementById("playButton");
+    var videoSize = 1.0;
+    var initHeight = 540;
+    var initWidth = 960;
+   
+    $video.addEventListener('play',function () {
+        let timer;
+        let jindu = document.getElementById("jinduyanse");
+        let Progress = 0
+        timer = setInterval(function () {
+                    Progress = $video.currentTime / $video.duration;
+                    jindu.style.width = (Progress * initWidth) + "px"
+        }, 100)
+    })
+    
+    //视频暂停
+    function videoPlayOrPause() {
+        if($video.paused) {
+            $playButton.innerHTML = "暂停";
+            $video.play();
+        }else{
+            $playButton.innerHTML = "播放";
+            $video.pause();
+        }
+    }
+
+    //快进快退
+    function fastForward(params) {
+        $video.currentTime += Number(params);
+        $video.play();
+    }
+
+    //上一集下一集
+    function changeEpisode(change) {
+
+        if(change.value != undefined) {
+            $video.src = change.value;  
+
+        } else {
+
+            var nowId = $video.src.match(/[0-9]/g);
+
+            var next = Number(nowId[nowId.length-2]) + Number(change);
+
+            if(next > 4 || next < 1) {
+                alert("没有下一集了");
+                return false;
+            }
+
+            var strBuild = "videos/tom" + next + ".mp4";
+            $video.src = strBuild;
+        }
+
+        $video.play();
+    }
+
+    //静音
+    function videoMute() {
+        $muteButton = document.getElementById("muteButton");
+        if($video.muted) {
+            $muteButton.innerHTML = "静音";
+            $video.muted = false;
+        }else{
+            $muteButton.innerHTML = "取消静音";
+            $video.muted = true;
+        }
+    }
+
+    //恢复原始大小
+    function videoInitSize() {
+        videoSize = 1.0;
+        $video.style.height = (initHeight) + "px"; 
+        $video.style.width = (initWidth) + "px"; 
+    }
+
+    //视频页面大小
+    function videoChangeSize(num) {
+        if(num < 0 && videoSize < 0.6) {
+            alert("视频已经最小")
+            return false;
+        }
+        if(num > 0 && videoSize > 1.4) {
+            alert("视频已经最大")
+            return false;
+        }
+        videoSize += num;
+        $video.style.height = (initHeight * videoSize) + "px"; 
+        $video.style.width = (initWidth * videoSize) + "px"; 
+    }
+
+</script>
+</html>

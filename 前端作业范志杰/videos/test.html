@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #table1 {
+            border-collapse:collapse
+            
+        }
+
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="300px" height="200" style="border: 1px solid;">
+    </canvas>
+    <hr></hr>
+    <table id="table1" border="1px" style="border-collapse: collapse;">
+        <tr><th>学号</th><th>姓名</th><th>年龄</th><th>住址</th></tr>
+        <tr><td>101</td><td>范志杰</td><td>20</td><td>河北邢台</td></tr>
+        <tr><td>102</td><td>火智</td><td>21</td><td>吉林延边</td></tr>
+        <tr><td>103</td><td>韦应祺</td><td>19</td><td>广东东莞</td></tr>
+        <tr><td>104</td><td>郑松杭</td><td>20</td><td>四川峨眉</td></tr>
+        <caption style="caption-side: bottom;">学生表</caption>
+    </table>
+    <hr></hr>
+    <form>
+        <fieldset>
+            <legend>基本信息</legend>
+
+            <label>姓名<input type="text"></input></label><br/>
+            <label>年龄<input type="text"></input></label><br/>
+            <label>学号<input type="text"></input></label><br/>
+            <label>性别<input type="radio" name="xb">男</input><input type="radio" name="xb">女</input></label><br/>
+            <label>喜欢的水果<br/>
+                <!--mutiple是多选标记，如果是单选去掉 size是显示的条数(水果类标题也会计算) -->
+                <select multiple size="10">
+
+                    <optgroup label="水果类">
+                        <option>苹果</option>
+                        <option>鸭梨</option>
+                        <option>葡萄</option>
+                    </optgroup>
+                    
+                    <optgroup label="蔬菜类">
+                        <option>土豆</option>
+                        <option>番茄</option></option>
+                        <option>萝卜</option>
+                    </optgroup>
+                    
+                </select>
+            </label>
+        </fieldset>
+    </form>
+</body>
+<script>
+    var ctx = document.getElementById("myCanvas").getContext("2d");
+
+    ctx.fillStyle = "yellow"
+    ctx.beginPath()
+    ctx.arc(150,100,80,0,Math.PI * 2);
+    ctx.stroke();
+    ctx.fill()
+
+    ctx.fillStyle = "blue"
+    ctx.beginPath()
+    ctx.arc(150,100,60,0,Math.PI * 2);
+    ctx.stroke();
+    ctx.fill()
+
+    ctx.fillStyle = "red"
+    ctx.beginPath()
+    ctx.arc(150,100,40,0,Math.PI * 2);
+    ctx.stroke();
+    ctx.fill()
+
+    ctx.fillStyle = "green"
+    ctx.beginPath()
+    ctx.arc(150,100,20,0,Math.PI * 2);
+    ctx.stroke();
+    ctx.fill()
+</script>
+</html>
